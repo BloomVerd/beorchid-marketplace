@@ -1,0 +1,11 @@
+mutation CreateListing($input: CreateListingInput!) {
+  createListing(input: $input) {
+    id
+    crop
+    region
+    acreage
+    askingPrice
+    status
+    createdAt
+  }
+}

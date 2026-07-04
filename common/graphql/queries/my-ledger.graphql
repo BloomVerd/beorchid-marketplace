@@ -1,0 +1,10 @@
+query MyLedger($from: DateTime, $to: DateTime, $account: LedgerAccount) {
+  myLedger(from: $from, to: $to, account: $account) {
+    id
+    direction
+    amount
+    account
+    transactionId
+    createdAt
+  }
+}

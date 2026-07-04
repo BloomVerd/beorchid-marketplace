@@ -1,0 +1,8 @@
+mutation MakeOffer($listingId: ID!, $amount: Float!, $message: String) {
+  makeOffer(listingId: $listingId, amount: $amount, message: $message) {
+    id
+    status
+    amount
+    expiresAt
+  }
+}

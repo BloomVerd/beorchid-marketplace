@@ -1,0 +1,18 @@
+query MyWatchlist {
+  myWatchlist {
+    id
+    entityType
+    entityId
+    priceThreshold
+    createdAt
+  }
+}
+
+query MySavedSearches {
+  mySavedSearches {
+    id
+    name
+    filters
+    createdAt
+  }
+}

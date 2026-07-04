@@ -1,0 +1,5 @@
+mutation SendMagicLink($email: String!, $redirectBase: String) {
+  sendMagicLink(email: $email, redirectBase: $redirectBase) {
+    message
+  }
+}

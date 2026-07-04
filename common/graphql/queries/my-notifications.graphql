@@ -1,0 +1,10 @@
+query GetMyNotifications($page: Int, $limit: Int) {
+  getMyNotifications(page: $page, limit: $limit) {
+    id
+    title
+    message
+    type
+    isRead
+    createdAt
+  }
+}

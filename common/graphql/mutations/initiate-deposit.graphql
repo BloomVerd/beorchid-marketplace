@@ -1,0 +1,11 @@
+mutation InitiateDeposit($input: InitiateDepositInput!) {
+  initiateDeposit(input: $input) {
+    checkoutUrl
+    intent {
+      id
+      status
+      amount
+      providerRef
+    }
+  }
+}

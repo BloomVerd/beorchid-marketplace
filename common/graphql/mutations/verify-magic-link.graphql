@@ -1,0 +1,14 @@
+mutation VerifyMagicLink($token: String!) {
+  verifyMagicLink(token: $token) {
+    accessToken
+    refreshToken
+    farmer {
+      id
+      email
+      firstName
+      lastName
+      roles
+      isFieldAgent
+    }
+  }
+}

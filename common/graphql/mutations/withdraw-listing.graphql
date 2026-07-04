@@ -1,0 +1,6 @@
+mutation WithdrawListing($id: ID!) {
+  withdrawListing(id: $id) {
+    id
+    status
+  }
+}

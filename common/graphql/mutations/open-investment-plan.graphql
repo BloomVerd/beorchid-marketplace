@@ -1,0 +1,6 @@
+mutation OpenInvestmentPlan($id: ID!) {
+  openInvestmentPlan(id: $id) {
+    id
+    status
+  }
+}

@@ -1,0 +1,6 @@
+mutation UpdateCoinStatus($id: ID!, $status: CoinStatus!) {
+  updateCoinStatus(id: $id, status: $status) {
+    id
+    status
+  }
+}

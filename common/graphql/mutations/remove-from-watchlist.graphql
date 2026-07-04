@@ -1,0 +1,3 @@
+mutation RemoveFromWatchlist($id: ID!) {
+  removeFromWatchlist(id: $id)
+}

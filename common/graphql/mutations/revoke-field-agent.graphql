@@ -1,0 +1,6 @@
+mutation RevokeFieldAgent($userId: ID!) {
+  revokeFieldAgent(userId: $userId) {
+    id
+    isFieldAgent
+  }
+}

@@ -1,0 +1,10 @@
+mutation BuyCoin($coinId: ID!, $units: Float!, $idempotencyKey: String!) {
+  buyCoin(coinId: $coinId, units: $units, idempotencyKey: $idempotencyKey) {
+    id
+    side
+    units
+    unitPrice
+    grossAmount
+    executedAt
+  }
+}

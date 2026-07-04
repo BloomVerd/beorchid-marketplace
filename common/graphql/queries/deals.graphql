@@ -1,0 +1,14 @@
+query MyDeals {
+  myDeals {
+    id
+    listingId
+    acceptedOfferId
+    sellerId
+    buyerId
+    amount
+    status
+    escrowLedgerRef
+    createdAt
+    updatedAt
+  }
+}

@@ -1,0 +1,55 @@
+query Coins {
+  coins {
+    id
+    name
+    symbol
+    cropId
+    basePrice
+    currentPrice
+    circulatingSupply
+    status
+    createdAt
+  }
+}
+
+query CoinDetail($id: ID!) {
+  coin(id: $id) {
+    id
+    name
+    symbol
+    cropId
+    basePrice
+    currentPrice
+    circulatingSupply
+    status
+    pricingWeights
+    createdAt
+  }
+}
+
+query CoinPrices($coinId: ID!, $from: DateTime, $to: DateTime) {
+  coinPrices(coinId: $coinId, from: $from, to: $to) {
+    id
+    price
+    computedAt
+  }
+}
+
+query MyCoins {
+  myCoins {
+    holding {
+      id
+      coinId
+      units
+      avgCost
+    }
+    coin {
+      id
+      name
+      symbol
+      currentPrice
+    }
+    currentValue
+    unrealizedPnl
+  }
+}

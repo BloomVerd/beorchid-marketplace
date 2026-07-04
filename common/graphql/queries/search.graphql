@@ -1,0 +1,32 @@
+query Search($query: String!, $limit: Int) {
+  search(query: $query, limit: $limit) {
+    listings {
+      id
+      crop
+      region
+      askingPrice
+      currency
+      status
+    }
+    coins {
+      id
+      name
+      symbol
+      currentPrice
+      status
+    }
+    plans {
+      id
+      title
+      unitCost
+      status
+      maturityDays
+    }
+    crops {
+      id
+      name
+      slug
+      category
+    }
+  }
+}

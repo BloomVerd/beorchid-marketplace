@@ -1,0 +1,50 @@
+{
+  "name": "mkt-scaffold",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "get-schema": "bun scripts/get-schema.ts",
+    "codegen": "graphql-codegen --config codegen.ts",
+    "codegen:watch": "graphql-codegen --config codegen.ts --watch",
+    "dev:watch": "bun run get-schema && bunx concurrently \"bun run codegen:watch\" \"bun run dev\""
+  },
+  "dependencies": {
+    "@apollo/client": "^4.2.3",
+    "@hookform/resolvers": "^5.4.0",
+    "@types/leaflet": "^1.9.21",
+    "graphql": "^17.0.1",
+    "leaflet": "^1.9.4",
+    "leaflet-defaulticon-compatibility": "^0.1.2",
+    "lucide-react": "^1.21.0",
+    "next": "16.2.9",
+    "next-themes": "^0.4.6",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "react-hook-form": "^7.80.0",
+    "react-leaflet": "^5.0.0",
+    "rxjs": "^7.8.2",
+    "sonner": "^2.0.7",
+    "zod": "^4.4.3",
+    "zustand": "^5.0.14"
+  },
+  "devDependencies": {
+    "@graphql-codegen/cli": "^7.1.3",
+    "@graphql-codegen/client-preset": "^6.0.1",
+    "@graphql-codegen/typescript-graphql-files-modules": "^4.0.1",
+    "@graphql-typed-document-node/core": "^3.2.0",
+    "@tailwindcss/postcss": "^4",
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "concurrently": "^10.0.3",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.9",
+    "get-graphql-schema": "^2.1.2",
+    "tailwindcss": "^4",
+    "typescript": "^5"
+  }
+}

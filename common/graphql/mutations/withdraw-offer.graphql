@@ -1,0 +1,6 @@
+mutation WithdrawOffer($offerId: ID!) {
+  withdrawOffer(offerId: $offerId) {
+    id
+    status
+  }
+}

@@ -1,0 +1,76 @@
+query AdminMetrics {
+  adminMetrics {
+    gmv
+    aum
+    coinVolume
+    activeInvestments
+    totalListings
+    totalDeals
+    totalUsers
+    gmvDelta
+    aumDelta
+    coinVolumeDelta
+    activeInvestmentsDelta
+    totalListingsDelta
+    totalDealsDelta
+    totalUsersDelta
+  }
+}
+
+query AdminUsers {
+  adminUsers {
+    id
+    email
+    firstName
+    lastName
+    roles
+    isFieldAgent
+    createdAt
+  }
+}
+
+query AdminDeals {
+  adminDeals {
+    id
+    status
+    amount
+    sellerId
+    buyerId
+    createdAt
+  }
+}
+
+query AdminOffers {
+  adminOffers {
+    id
+    status
+    amount
+    listingId
+    buyerId
+    createdAt
+  }
+}
+
+query AuditLog($entity: String, $from: DateTime, $to: DateTime) {
+  auditLog(entity: $entity, from: $from, to: $to) {
+    id
+    actorId
+    action
+    entity
+    entityId
+    diff
+    createdAt
+  }
+}
+
+mutation AdminCreateUser($input: AdminCreateUserInput!) {
+  adminCreateUser(input: $input) {
+    id
+    firstName
+    lastName
+    email
+    roles
+    isFieldAgent
+    createdAt
+  }
+}

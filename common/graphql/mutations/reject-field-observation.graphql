@@ -1,0 +1,8 @@
+mutation RejectFieldObservation($id: ID!, $reason: String!) {
+  rejectFieldObservation(id: $id, reason: $reason) {
+    id
+    status
+    reviewNote
+    reviewedAt
+  }
+}

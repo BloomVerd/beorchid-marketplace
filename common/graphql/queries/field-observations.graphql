@@ -1,0 +1,30 @@
+query MyFieldObservations {
+  myFieldObservations {
+    id
+    status
+    cropId
+    region
+    observedAt
+    observedPrice
+    qualityGrade
+    confidence
+    createdAt
+  }
+}
+
+query AdminFieldObservations($status: ObservationStatus, $cropId: String, $region: String) {
+  adminFieldObservations(status: $status, cropId: $cropId, region: $region) {
+    id
+    cropId
+    region
+    observedAt
+    observedPrice
+    priceType
+    qualityGrade
+    confidence
+    status
+    sourceNote
+    reviewNote
+    createdAt
+  }
+}

@@ -1,0 +1,8 @@
+mutation CounterOffer($offerId: ID!, $amount: Float!, $message: String) {
+  counterOffer(offerId: $offerId, amount: $amount, message: $message) {
+    id
+    status
+    amount
+    parentOfferId
+  }
+}

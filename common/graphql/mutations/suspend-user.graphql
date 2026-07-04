@@ -1,0 +1,5 @@
+mutation SuspendUser($userId: ID!) {
+  suspendUser(userId: $userId) {
+    id
+  }
+}

@@ -1,0 +1,12 @@
+mutation CreateCoin($input: CreateCoinInput!) {
+  createCoin(input: $input) {
+    id
+    name
+    symbol
+    cropId
+    basePrice
+    currentPrice
+    status
+    createdAt
+  }
+}

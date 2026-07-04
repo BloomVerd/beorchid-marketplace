@@ -1,0 +1,7 @@
+mutation ApproveFieldObservation($id: ID!, $adjustedPrice: Float) {
+  approveFieldObservation(id: $id, adjustedPrice: $adjustedPrice) {
+    id
+    status
+    reviewedAt
+  }
+}

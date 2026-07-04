@@ -1,0 +1,56 @@
+query Crops($category: String, $region: String) {
+  crops(category: $category, region: $region) {
+    id
+    name
+    slug
+    unit
+    category
+    region
+    createdAt
+    coin {
+      id
+      name
+      symbol
+      currentPrice
+      basePrice
+      status
+    }
+    recentPrices {
+      price
+      observedAt
+    }
+  }
+}
+
+query CropPrices($cropId: ID!, $region: String, $from: DateTime, $to: DateTime) {
+  cropPrices(cropId: $cropId, region: $region, from: $from, to: $to) {
+    id
+    region
+    price
+    currency
+    observedAt
+    priceType
+    source
+    qualityGrade
+  }
+}
+
+query CropForecast($cropId: ID!, $region: String!, $horizonDays: Float) {
+  cropForecast(cropId: $cropId, region: $region, horizonDays: $horizonDays) {
+    id
+    predictedPrice
+    confidenceLow
+    confidenceHigh
+    horizonDays
+    generatedAt
+  }
+}
+
+query MarketInsights($cropId: String, $region: String) {
+  marketInsights(cropId: $cropId, region: $region) {
+    id
+    type
+    payload
+    publishedAt
+  }
+}

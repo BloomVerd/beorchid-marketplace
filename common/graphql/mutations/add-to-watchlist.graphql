@@ -1,0 +1,8 @@
+mutation AddToWatchlist($entityType: WatchlistEntityType!, $entityId: ID!, $priceThreshold: Int) {
+  addToWatchlist(entityType: $entityType, entityId: $entityId, priceThreshold: $priceThreshold) {
+    id
+    entityType
+    entityId
+    priceThreshold
+  }
+}

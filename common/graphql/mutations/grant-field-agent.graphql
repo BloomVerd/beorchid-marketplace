@@ -1,0 +1,6 @@
+mutation GrantFieldAgent($userId: ID!) {
+  grantFieldAgent(userId: $userId) {
+    id
+    isFieldAgent
+  }
+}

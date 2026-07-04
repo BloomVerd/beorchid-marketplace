@@ -1,0 +1,9 @@
+mutation SettleInvestmentPlan($planId: ID!, $actualProfitPerUnit: Float!, $notes: String) {
+  settleInvestmentPlan(planId: $planId, actualProfitPerUnit: $actualProfitPerUnit, notes: $notes) {
+    id
+    planId
+    actualProfitPerUnit
+    settledAt
+    notes
+  }
+}

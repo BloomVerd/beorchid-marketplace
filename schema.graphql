@@ -1,0 +1,1434 @@
+"""Exposes a URL that specifies the behavior of this scalar."""
+directive @specifiedBy(
+  """The URL that specifies the behavior of this scalar."""
+  url: String!
+) on SCALAR
+
+"""
+Indicates exactly one field must be supplied and this field must not be `null`.
+"""
+directive @oneOf on INPUT_OBJECT
+
+input AddOrgMemberInput {
+  orgId: String!
+  userId: String!
+  memberRole: String! = "member"
+}
+
+input AdminCreateUserInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  country: String! = "GH"
+  password: String!
+  roles: [String!]
+}
+
+type AdminMetrics {
+  gmv: Int!
+  aum: Int!
+  coinVolume: Int!
+  activeInvestments: Int!
+  totalListings: Int!
+  totalDeals: Int!
+  totalUsers: Int!
+  gmvDelta: Float
+  aumDelta: Float
+  coinVolumeDelta: Float
+  activeInvestmentsDelta: Float
+  totalListingsDelta: Float
+  totalDealsDelta: Float
+  totalUsersDelta: Float
+}
+
+enum AlertSeverity {
+  INFO
+  WARNING
+  CRITICAL
+}
+
+type AuditLog {
+  id: ID!
+  actorId: String!
+  action: String!
+  entity: String!
+  entityId: String!
+  diff: JSON
+  createdAt: DateTime!
+}
+
+type AuthPayload {
+  farmer: Farmer!
+  accessToken: String!
+  refreshToken: String!
+}
+
+input ChangePasswordInput {
+  currentPassword: String!
+  newPassword: String!
+}
+
+type Chat {
+  id: ID!
+  status: String
+  title: String
+  farm: Farm
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Coin {
+  id: ID!
+  name: String!
+  symbol: String!
+  cropId: String
+  basePrice: Int!
+  currentPrice: Int!
+  circulatingSupply: Float!
+  pricingWeights: JSON!
+  status: CoinStatus!
+  createdBy: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CoinHolding {
+  id: ID!
+  userId: String!
+  coinId: String!
+  units: Float!
+  avgCost: Int!
+  updatedAt: DateTime!
+}
+
+type CoinHoldingWithPnl {
+  holding: CoinHolding!
+  coin: Coin!
+  currentValue: Int!
+  unrealizedPnl: Int!
+}
+
+type CoinPricePoint {
+  id: ID!
+  coinId: String!
+  price: Int!
+  computedAt: DateTime!
+  inputs: JSON!
+}
+
+enum CoinSide {
+  BUY
+  SELL
+}
+
+enum CoinStatus {
+  DRAFT
+  ACTIVE
+  PAUSED
+  DELISTED
+}
+
+type CoinTransaction {
+  id: ID!
+  userId: String!
+  coinId: String!
+  side: CoinSide!
+  units: Float!
+  unitPrice: Int!
+  grossAmount: Int!
+  fee: Int!
+  executedAt: DateTime!
+  ledgerRef: String
+}
+
+type Coordinate {
+  id: ID!
+  order: Float!
+  lat: Float!
+  lon: Float!
+}
+
+input CoordinatePointInput {
+  order: Int!
+  lat: Float!
+  lon: Float!
+}
+
+input CreateCoinInput {
+  name: String!
+  symbol: String!
+  cropId: String
+  basePrice: Int!
+  pricingWeights: JSON
+}
+
+input CreateCropInput {
+  name: String!
+  slug: String
+  unit: String
+  category: String
+  region: String
+}
+
+input CreateExternalFeedInput {
+  name: String!
+  url: String!
+  format: FeedFormat!
+  fieldMap: JSON!
+  cropId: String
+  region: String
+  priceType: String!
+  sourceLabel: String!
+  scheduleCron: String!
+}
+
+input CreateFarmInput {
+  name: String!
+  crop_type: CropType!
+  variety: String
+  farm_size: Float!
+  farm_type: FarmType!
+}
+
+input CreateListingInput {
+  farmId: String!
+  crop: String!
+  acreage: Float!
+  region: String!
+  askingPrice: Int!
+  description: String
+}
+
+input CreateOrganizationInput {
+  name: String!
+}
+
+input CreatePlanInput {
+  cropId: String
+  title: String!
+  acreage: Float
+  unitCost: Int!
+  expectedProfitMin: Int!
+  expectedProfitMax: Int!
+  maturityDays: Int!
+  totalUnits: Int!
+  riskNotes: String
+}
+
+type Crop {
+  id: ID!
+  name: String!
+  slug: String!
+  unit: String!
+  category: String
+  region: String
+  metadata: JSON
+  recentPrices: [PriceDataPoint!]
+  coin: Coin
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type CropFieldHealth {
+  id: ID!
+  field_name: String!
+  crop_type: CropType!
+  health_percent: Float!
+  ndvi: Float!
+  disease_probability: Float!
+  disease_type: String
+  growth_stage: GrowthStage!
+  expected_harvest: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum CropType {
+  MAIZE
+  RICE
+  CASSAVA
+  VEGETABLES
+}
+
+type DataIngestionJob {
+  id: ID!
+  type: IngestionJobType!
+  feedId: String
+  submittedBy: String!
+  status: IngestionJobStatus!
+  rowCount: Int
+  processedCount: Int!
+  skippedCount: Int!
+  errorCount: Int!
+  errors: JSON
+  storageRef: String
+  startedAt: DateTime
+  completedAt: DateTime
+  createdAt: DateTime!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+type Deal {
+  id: ID!
+  listingId: String!
+  acceptedOfferId: String!
+  sellerId: String!
+  buyerId: String!
+  amount: Int!
+  status: DealStatus!
+  escrowLedgerRef: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum DealStatus {
+  PENDING_PAYMENT
+  IN_ESCROW
+  COMPLETED
+  CANCELLED
+  DISPUTED
+}
+
+type DepositResult {
+  intent: PaymentIntentV2!
+  checkoutUrl: String!
+}
+
+enum DeviceStatus {
+  ONLINE
+  OFFLINE
+  INACTIVE
+}
+
+enum DeviceType {
+  SOIL_MOISTURE_SENSOR
+  WEATHER_STATION
+  IRRIGATION_CONTROLLER
+  AERIAL_SCOUT_DRONE
+  FIELD_CAMERA
+  TEMPERATURE_SENSOR
+  HUMIDITY_SENSOR
+  OTHER
+}
+
+type DiseaseAlert {
+  id: ID!
+  disease_name: String!
+  probability: Float!
+  first_detected: DateTime!
+  spread: DiseaseSpread!
+  treatment: String!
+  infected_leaves: Int
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum DiseaseSpread {
+  INCREASING
+  STABLE
+  DECREASING
+}
+
+type ExternalFeed {
+  id: ID!
+  name: String!
+  url: String!
+  format: FeedFormat!
+  fieldMap: JSON!
+  cropId: String
+  region: String
+  priceType: String!
+  sourceLabel: String!
+  scheduleCron: String!
+  isActive: Boolean!
+  lastRunAt: DateTime
+  lastRunStatus: String
+  createdBy: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type Farm {
+  id: ID!
+  name: String!
+  crop_type: CropType!
+  variety: String
+  farm_size: Float!
+  size_unit: SizeUnit!
+  farm_type: FarmType!
+  lat: Float
+  lon: Float
+  setup_status: SetupStatus!
+  soil_type: SoilType
+  crop_density: Float
+  growth_stage: GrowthStage
+  elevation_m: Float
+  days_to_maturity: Float
+  iot_device_ids: [String!]
+  setup_photo_url: String
+  setup_photo_lat: Float
+  setup_photo_lon: Float
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  coordinates: [Coordinate!]
+  farm_images: [ImageData!]
+  iot_devices: [IotDevice!]
+}
+
+type FarmDataResult {
+  status: FarmDataStatus!
+  generated_at: String
+  sensors: SensorSection
+  irrigation: IrrigationSection
+  yield: YieldSection
+}
+
+enum FarmDataStatus {
+  PENDING
+  READY
+}
+
+type Farmer {
+  id: ID!
+  firstName: String!
+  lastName: String!
+  email: String!
+  country: String!
+  roles: [String!]!
+  isFieldAgent: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  settings: FarmerSettings
+}
+
+type FarmerSettings {
+  id: ID!
+  farmDataLookbackSeconds: Int!
+  farmDataCacheTtlSeconds: Int!
+  healthReportIntervalSeconds: Int!
+  predictionWeeklyLimit: Int!
+  notifyInApp: Boolean!
+  notifyEmail: Boolean!
+  notifySms: Boolean!
+  smsPhoneNumber: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type FarmerSubscription {
+  id: ID!
+  plan: SubscriptionPlan!
+  status: String!
+  currentPeriodStart: DateTime!
+  currentPeriodEnd: DateTime
+  paystackCustomerCode: String
+  paystackSubscriptionCode: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type FarmHealth {
+  id: ID!
+  overall_score: Float!
+  soil_health: Float!
+  crop_health: Float!
+  weather_stress: Float!
+  disease_risk: Float!
+  computed_at: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  crop_field_health: [CropFieldHealth!]
+  disease_alerts: [DiseaseAlert!]
+  health_alerts: [HealthAlert!]
+  sensor_history: [SensorHistoryPoint!]
+  yield_comparisons: [YieldComparison!]
+}
+
+type FarmHealthDetail {
+  health: FarmHealth!
+  weather: [WeatherForecast!]
+  predictions: [PredictionInsight!]
+}
+
+type FarmHealthSummary {
+  farmId: String!
+  farmName: String!
+  cropType: CropType!
+  area: Float!
+  healthScore: FarmHealth!
+  topAlert: HealthAlert
+  weather: [WeatherForecast!]
+  predictions: [PredictionInsight!]
+}
+
+input FarmImageItemInput {
+  url: String!
+  lat: Float!
+  lon: Float!
+  predictionTypes: [PredictionType!]!
+}
+
+enum FarmType {
+  FIELD
+  GREENHOUSE
+}
+
+enum FeedFormat {
+  JSON
+  CSV
+}
+
+type FieldAgentCapability {
+  id: ID!
+  userId: String!
+  grantedBy: String!
+  grantedAt: DateTime!
+  revokedAt: DateTime
+}
+
+type FieldObservation {
+  id: ID!
+  cropId: String!
+  region: String!
+  observedAt: DateTime!
+  observedPrice: Int!
+  priceType: FieldPriceType!
+  quantityAvailable: Float
+  qualityGrade: QualityGrade
+  sourceNote: String!
+  agentId: String!
+  agentDeviceId: String
+  attachmentUrls: [String!]!
+  conditionTags: [String!]!
+  confidence: ObservationConfidence!
+  status: ObservationStatus!
+  reviewedBy: String
+  reviewNote: String
+  reviewedAt: DateTime
+  marketPricePointId: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum FieldPriceType {
+  FARM_GATE
+  WHOLESALE
+  RETAIL
+  AUCTION
+}
+
+type GenerateFarmPredictionResponse {
+  message: String!
+}
+
+enum GrowthStage {
+  GERMINATION
+  VEGETATIVE
+  FLOWERING
+  FRUITING
+  HARVEST
+}
+
+type HealthAlert {
+  id: ID!
+  severity: AlertSeverity!
+  title: String!
+  description: String!
+  action: String!
+  estimated_impact: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type ImageData {
+  id: ID!
+  url: String!
+  lat: Float!
+  lon: Float!
+  prediction_types: [PredictionType!]!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum IngestionJobStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+  PARTIAL
+}
+
+enum IngestionJobType {
+  CSV_UPLOAD
+  JSON_UPLOAD
+  EXTERNAL_FEED_RUN
+  FORECAST_IMPORT
+}
+
+input InitiateDepositInput {
+  amountPesewas: Int!
+  idempotencyKey: String!
+}
+
+input InitiatePaymentInput {
+  planId: ID!
+  callbackUrl: String
+}
+
+input InjectPricePointInput {
+  cropId: String
+  cropSlug: String
+  region: String!
+  observedAt: String!
+  priceInPesewas: Int!
+  currency: String! = "GHS"
+  priceType: PriceType!
+  source: String!
+  sourceUrl: String
+  volumeKg: Int
+  qualityGrade: String
+  notes: String
+}
+
+enum InsightType {
+  SUPPLY_DEMAND
+  SEASONALITY
+  VOLATILITY
+  REGIONAL_COMPARISON
+  TOP_CROPS
+  REPORT
+}
+
+type InvestmentPlan {
+  id: ID!
+  cropId: String
+  title: String!
+  acreage: Float
+  unitCost: Int!
+  expectedProfitMin: Int!
+  expectedProfitMax: Int!
+  maturityDays: Int!
+  totalUnits: Int!
+  unitsRemaining: Int!
+  riskNotes: String
+  status: PlanStatus!
+  createdBy: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type InvestmentPurchase {
+  id: ID!
+  planId: String!
+  investorId: String!
+  units: Int!
+  principal: Int!
+  status: PurchaseStatus!
+  purchasedAt: DateTime!
+  maturesAt: DateTime!
+  payoutAmount: Int
+  settlementLedgerRef: String
+  updatedAt: DateTime!
+}
+
+type InvestmentSettlement {
+  id: ID!
+  planId: String!
+  actualProfitPerUnit: Int!
+  settledBy: String!
+  settledAt: DateTime!
+  notes: String
+}
+
+enum IotCommandType {
+  IRRIGATE
+  STOP_IRRIGATION
+  CAPTURE_IMAGE
+  ACTIVATE_SENSOR
+  DEACTIVATE_SENSOR
+}
+
+type IotDevice {
+  id: ID!
+  device_id: String!
+  label: String!
+  device_type: DeviceType!
+  is_active: Boolean!
+  status: DeviceStatus!
+  registered_at: DateTime!
+  certificate_pem: String
+  private_key: String
+  public_key: String
+  lat: Float
+  lon: Float
+}
+
+type IotToolCall {
+  id: ID!
+  command_type: IotCommandType!
+  parameters: JSON
+  status: IotToolCallStatus!
+  response: JSON
+  requested_by: String!
+  iot_device: IotDevice!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum IotToolCallStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETED
+  FAILED
+}
+
+type IrrigationSection {
+  recommendation: String!
+  amount_mm: Float
+  urgency_hours: Float
+  next_rainfall: String
+  badge_text: String!
+}
+
+"""Arbitrary JSON scalar type"""
+scalar JSON
+
+enum KycStatus {
+  PENDING
+  APPROVED
+  REJECTED
+}
+
+enum LedgerAccount {
+  USER_CASH
+  ESCROW
+  PLATFORM_FEE
+  COIN_POOL
+  INVESTMENT_POOL
+  EXTERNAL
+}
+
+enum LedgerDirection {
+  DEBIT
+  CREDIT
+}
+
+type LedgerEntry {
+  id: ID!
+  transactionId: String!
+  walletId: String!
+  direction: LedgerDirection!
+  amount: Float!
+  account: LedgerAccount!
+  createdAt: DateTime!
+}
+
+type Listing {
+  id: ID!
+  farmId: String!
+  sellerId: String!
+  crop: String!
+  acreage: Float!
+  region: String!
+  askingPrice: Int!
+  currency: String!
+  description: String
+  status: ListingStatus!
+  expiresAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  lat: Float
+  lon: Float
+  farmImages: [ImageData!]!
+  farmHealth: FarmHealth
+}
+
+enum ListingStatus {
+  DRAFT
+  OPEN
+  UNDER_OFFER
+  ACCEPTED
+  SOLD
+  WITHDRAWN
+  EXPIRED
+}
+
+type MarketPricePoint {
+  id: ID!
+  cropId: String!
+  region: String!
+  price: Int!
+  currency: String!
+  observedAt: DateTime!
+  source: String!
+  sourceUrl: String
+  priceType: PriceType!
+  volumeKg: Int
+  qualityGrade: String
+  notes: String
+  ingestionJobId: String
+  fieldObservationId: String
+  isSuperseded: Boolean!
+  supersededBy: String
+  createdAt: DateTime!
+}
+
+type MarketSurveyInsight {
+  id: ID!
+  cropId: String
+  region: String
+  type: InsightType!
+  payload: JSON!
+  publishedAt: DateTime!
+  authorId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type MessageResponse {
+  message: String!
+}
+
+type Mutation {
+  register(input: RegisterInput!): AuthPayload!
+  sendMagicLink(email: String!, redirectBase: String): MessageResponse!
+  verifyMagicLink(token: String!): AuthPayload!
+  loginWithPassword(email: String!, password: String!): AuthPayload!
+  refresh(refreshToken: String!): AuthPayload!
+  logout(refreshToken: String!): MessageResponse!
+  changePassword(input: ChangePasswordInput!): MessageResponse!
+  adminCreateUser(input: AdminCreateUserInput!): Farmer!
+  updateSettings(input: UpdateFarmerSettingsInput!): FarmerSettings!
+  initiateSubscriptionPayment(input: InitiatePaymentInput!): PaymentInitResponse!
+  markNotificationRead(notificationId: String!): Notification!
+  initiateDeposit(input: InitiateDepositInput!): DepositResult!
+  addFarm(input: CreateFarmInput!): Farm!
+  updateFarmCoordinates(farmId: String!, input: UpdateFarmCoordinatesInput!): Farm!
+  updateFarmPhoto(farmId: String!, input: UpdateFarmPhotoInput!): Farm!
+  updateFarmSoilData(farmId: String!, input: UpdateFarmSoilDataInput!): Farm!
+  completeSetup(farmId: String!): Farm!
+  uploadFarmImages(farmId: String!, input: UploadFarmImagesInput!): [ImageData!]!
+  registerIotDevice(farmId: String!, input: RegisterIotDeviceInput!): IotDevice!
+  deleteIotDevice(farmId: String!, deviceId: String!): Boolean!
+  activateIotDevice(farmId: String!, deviceId: String!): IotDevice!
+  clearIotDeviceCert(farmId: String!, deviceId: String!): Boolean!
+  triggerIotDevice(farmId: String!, deviceId: String!, input: TriggerIotDeviceInput!): IotToolCall!
+  deleteFarmImage(farmId: String!, imageId: String!): Boolean!
+  generateFarmPredictions(farmId: String!): GenerateFarmPredictionResponse!
+  createPredictionRange(farmId: String!): PredictionRange!
+  deleteFile(key: String!): String!
+  createOrganization(input: CreateOrganizationInput!): Organization!
+  addOrgMember(input: AddOrgMemberInput!): OrganizationMember!
+  publishInsight(input: PublishInsightInput!): MarketSurveyInsight!
+  publishForecast(input: PublishForecastInput!): PriceForecast!
+  createCrop(input: CreateCropInput!): Crop!
+  submitFieldObservation(input: SubmitObservationInput!): FieldObservation!
+  submitFieldObservationBatch(inputs: [SubmitObservationInput!]!): ObservationBatchResult!
+  updateFieldObservation(id: ID!, input: SubmitObservationInput!): FieldObservation!
+  deleteFieldObservation(id: ID!): Boolean!
+  approveFieldObservation(id: ID!, adjustedPrice: Float): FieldObservation!
+  rejectFieldObservation(id: ID!, reason: String!): FieldObservation!
+  grantFieldAgentCapability(userId: ID!): FieldAgentCapability!
+  revokeFieldAgentCapability(userId: ID!): Boolean!
+  injectPricePoint(input: InjectPricePointInput!): MarketPricePoint!
+  correctPricePoint(id: ID!, newPriceInPesewas: Float!): MarketPricePoint!
+  createExternalFeed(input: CreateExternalFeedInput!): ExternalFeed!
+  updateExternalFeed(id: ID!, isActive: Boolean, scheduleCron: String): ExternalFeed!
+  deleteExternalFeed(id: ID!): Boolean!
+  triggerFeedNow(id: ID!): DataIngestionJob!
+  createListing(input: CreateListingInput!): Listing!
+  withdrawListing(id: ID!): Listing!
+  makeOffer(listingId: ID!, amount: Float!, message: String): Offer!
+  counterOffer(offerId: ID!, amount: Float!, message: String): Offer!
+  acceptOffer(offerId: ID!): Deal!
+  rejectOffer(offerId: ID!): Offer!
+  withdrawOffer(offerId: ID!): Offer!
+  confirmDealPayment(dealId: ID!): Deal!
+  createInvestmentPlan(input: CreatePlanInput!): InvestmentPlan!
+  openInvestmentPlan(id: ID!): InvestmentPlan!
+  closeInvestmentPlan(id: ID!): InvestmentPlan!
+  purchaseInvestment(planId: ID!, units: Float!): InvestmentPurchase!
+  settleInvestmentPlan(planId: ID!, actualProfitPerUnit: Float!, notes: String): InvestmentSettlement!
+  createCoin(input: CreateCoinInput!): Coin!
+  updateCoinStatus(id: ID!, status: CoinStatus!): Coin!
+  recomputeCoinPrice(coinId: ID!): CoinPricePoint!
+  buyCoin(coinId: ID!, units: Float!, idempotencyKey: String!): CoinTransaction!
+  sellCoin(coinId: ID!, units: Float!, idempotencyKey: String!): CoinTransaction!
+  addToWatchlist(entityType: WatchlistEntityType!, entityId: ID!, priceThreshold: Int): Watchlist!
+  removeFromWatchlist(id: ID!): Boolean!
+  createSavedSearch(name: String!, filters: JSON!): SavedSearch!
+  deleteSavedSearch(id: ID!): Boolean!
+  updateUserRoles(userId: ID!, roles: [String!]!): Farmer!
+  suspendUser(userId: ID!): Farmer!
+  grantFieldAgent(userId: ID!): Farmer!
+  revokeFieldAgent(userId: ID!): Farmer!
+}
+
+type Notification {
+  id: ID!
+  title: String!
+  message: String!
+  type: NotificationType!
+  isRead: Boolean!
+  createdAt: DateTime!
+}
+
+enum NotificationType {
+  PREDICTION_ALERT
+  HEALTH_ALERT
+  SUBSCRIPTION_ACTIVATED
+  FARM_SETUP_COMPLETE
+  OFFER_RECEIVED
+  OFFER_ACCEPTED
+  OFFER_REJECTED
+  OFFER_COUNTERED
+  DEAL_PAYMENT_REQUIRED
+  DEAL_COMPLETED
+  INVESTMENT_PURCHASED
+  INVESTMENT_MATURED
+  INVESTMENT_SETTLED
+  COIN_PRICE_ALERT
+  COIN_DELISTED
+  WALLET_DEPOSIT_COMPLETED
+  WALLET_WITHDRAWAL_COMPLETED
+  LISTING_MATCH
+  MARKET_NEW_INSIGHT
+  FIELD_OBSERVATION_APPROVED
+  FIELD_OBSERVATION_REJECTED
+  MARKET_DATA_UPDATED
+  INGESTION_JOB_COMPLETED
+  INGESTION_JOB_FAILED
+  EXTERNAL_FEED_ERROR
+}
+
+type ObservationBatchItem {
+  index: Float!
+  success: Boolean!
+  observationId: String
+  error: String
+  skipped: Boolean
+}
+
+type ObservationBatchResult {
+  results: [ObservationBatchItem!]!
+  accepted: Float!
+  skipped: Float!
+  failed: Float!
+}
+
+enum ObservationConfidence {
+  LOW
+  MEDIUM
+  HIGH
+}
+
+enum ObservationStatus {
+  SUBMITTED
+  UNDER_REVIEW
+  APPROVED
+  REJECTED
+}
+
+type Offer {
+  id: ID!
+  listingId: String!
+  buyerId: String!
+  amount: Int!
+  currency: String!
+  message: String
+  status: OfferStatus!
+  parentOfferId: String
+  createdById: String
+  expiresAt: DateTime
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum OfferStatus {
+  PENDING
+  COUNTERED
+  ACCEPTED
+  REJECTED
+  WITHDRAWN
+  EXPIRED
+}
+
+type Organization {
+  id: ID!
+  name: String!
+  kycStatus: KycStatus!
+  ownerUserId: String!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+  members: [OrganizationMember!]
+}
+
+type OrganizationMember {
+  id: ID!
+  userId: String!
+  memberRole: String!
+  createdAt: DateTime!
+  orgId: String!
+}
+
+type PaginatedChats {
+  data: [Chat!]!
+  total: Int!
+  page: Int!
+  lastPage: Int!
+}
+
+type PaginatedFarmHealthSummaries {
+  data: [FarmHealthSummary!]!
+  total: Int!
+  page: Int!
+  lastPage: Int!
+}
+
+type PaginatedFarms {
+  data: [Farm!]!
+  total: Int!
+  page: Int!
+  lastPage: Int!
+}
+
+type PaginatedImages {
+  data: [ImageData!]!
+  total: Int!
+  page: Int!
+  lastPage: Int!
+}
+
+type PaginatedIotToolCalls {
+  data: [IotToolCall!]!
+  total: Int!
+  page: Int!
+  lastPage: Int!
+}
+
+type PaginatedPredictions {
+  data: [Prediction!]!
+  total: Int!
+  page: Int!
+  lastPage: Int!
+}
+
+type PaymentInitResponse {
+  authorizationUrl: String!
+  reference: String!
+}
+
+enum PaymentIntentStatus {
+  PENDING
+  PROCESSING
+  COMPLETED
+  FAILED
+}
+
+enum PaymentIntentType {
+  DEPOSIT
+  WITHDRAWAL
+}
+
+type PaymentIntentV2 {
+  id: ID!
+  walletId: String!
+  provider: String!
+  providerRef: String
+  type: PaymentIntentType!
+  amount: Int!
+  status: PaymentIntentStatus!
+  idempotencyKey: String!
+  checkoutUrl: String
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum PlanStatus {
+  DRAFT
+  OPEN
+  CLOSED
+  MATURED
+  SETTLED
+}
+
+type Prediction {
+  id: ID!
+  lat: Float!
+  lon: Float!
+  prediction_type: PredictionType!
+  risk_level: RiskLevel
+  description: String
+  createdAt: DateTime!
+  disease_alerts: [DiseaseAlert!]
+}
+
+type PredictionInsight {
+  id: String!
+  predictionType: PredictionType!
+  riskLevel: RiskLevel
+  lat: Float!
+  lon: Float!
+  imageUrl: String
+  createdAt: DateTime!
+  diseaseAlerts: [DiseaseAlert!]
+}
+
+type PredictionRange {
+  id: ID!
+  week_start: DateTime!
+  week_end: DateTime!
+  regeneration_count: Float!
+  inserted_at: DateTime!
+}
+
+enum PredictionType {
+  DISEASE_PREDICTION
+  YIELD_PREDICTION
+}
+
+type PresignedUploadUrl {
+  uploadUrl: String!
+  key: String!
+}
+
+type PriceDataPoint {
+  observedAt: DateTime!
+  price: Int!
+  currency: String!
+  priceType: PriceType!
+  source: String
+}
+
+type PriceForecast {
+  id: ID!
+  cropId: String!
+  region: String!
+  horizonDays: Int!
+  predictedPrice: Int!
+  confidenceLow: Int!
+  confidenceHigh: Int!
+  modelVersion: String!
+  generatedAt: DateTime!
+  createdAt: DateTime!
+}
+
+enum PriceType {
+  FARM_GATE
+  WHOLESALE
+  RETAIL
+  AUCTION
+  INDEX
+}
+
+input PublishForecastInput {
+  cropId: String!
+  region: String!
+  horizonDays: Int!
+  predictedPrice: Int!
+  confidenceLow: Int!
+  confidenceHigh: Int!
+  modelVersion: String!
+}
+
+input PublishInsightInput {
+  cropId: String
+  region: String
+  type: InsightType!
+  payload: JSON!
+}
+
+enum PurchaseStatus {
+  ACTIVE
+  MATURED
+  SETTLED
+  CANCELLED
+}
+
+enum QualityGrade {
+  A
+  B
+  C
+  UNGRADED
+}
+
+type Query {
+  getMe: Farmer!
+  getMySettings: FarmerSettings!
+  listSubscriptionPlans: [SubscriptionPlan!]!
+  getMySubscription: FarmerSubscription!
+  getMyNotifications(page: Int = 1, limit: Int = 20): [Notification!]!
+  myWallet: Wallet!
+  myLedger(from: DateTime, to: DateTime, account: LedgerAccount): [LedgerEntry!]!
+  listFarms(page: Int! = 1, limit: Int! = 20): PaginatedFarms!
+  getFarm(farmId: String!): Farm!
+  listIotToolCalls(farmId: String!, page: Int! = 1, limit: Int! = 20): PaginatedIotToolCalls!
+  listFarmImages(farmId: String!, page: Int! = 1, limit: Int! = 20, year: Int, month: Int, week: Int): PaginatedImages!
+  listFarmPredictions(farmId: String!, page: Int! = 1, limit: Int! = 20, year: Int, month: Int, week: Int): PaginatedPredictions!
+  imageUploadUrl(folder: String = "images"): PresignedUploadUrl!
+  documentUploadUrl(folder: String = "documents"): PresignedUploadUrl!
+  videoUploadUrl(folder: String = "videos"): PresignedUploadUrl!
+  listFarmsHealth(page: Int! = 1, limit: Int! = 20): PaginatedFarmHealthSummaries!
+  getFarmHealth(farmId: String!): FarmHealthDetail!
+  getChats(page: Int! = 1, limit: Int! = 20): PaginatedChats!
+  getFarmData(farmId: String!): FarmDataResult!
+  myOrganizations: [Organization!]!
+  crops(category: String, region: String): [Crop!]!
+  crop(id: ID!): Crop!
+  cropPrices(cropId: ID!, region: String, from: DateTime, to: DateTime): [MarketPricePoint!]!
+  cropForecast(cropId: ID!, region: String!, horizonDays: Float): [PriceForecast!]!
+  marketInsights(type: InsightType, cropId: String, region: String): [MarketSurveyInsight!]!
+  marketInsight(id: ID!): MarketSurveyInsight!
+  topCrops: [Crop!]!
+  myFieldObservations: [FieldObservation!]!
+  fieldObservation(id: ID!): FieldObservation
+  adminFieldObservations(status: ObservationStatus, cropId: String, region: String, from: DateTime, to: DateTime): [FieldObservation!]!
+  fieldAgents: [FieldAgentCapability!]!
+  ingestionJobs: [DataIngestionJob!]!
+  ingestionJob(id: ID!): DataIngestionJob!
+  externalFeeds: [ExternalFeed!]!
+  externalFeed(id: ID!): ExternalFeed!
+  listings(crop: String, region: String, status: ListingStatus, maxPrice: Float, minHealthScore: Float): [Listing!]!
+  listing(id: ID!): Listing!
+  myListings(farmId: ID): [Listing!]!
+  listingOffers(listingId: ID!): [Offer!]!
+  myOffers: [Offer!]!
+  myDeals: [Deal!]!
+  investmentPlans(status: PlanStatus, cropId: String, maxMaturityDays: Float, lowRiskOnly: Boolean): [InvestmentPlan!]!
+  investmentPlan(id: ID!): InvestmentPlan!
+  myInvestments: [InvestmentPurchase!]!
+  coins: [Coin!]!
+  coin(id: ID!): Coin!
+  coinPrices(coinId: ID!, from: DateTime, to: DateTime): [CoinPricePoint!]!
+  myCoins: [CoinHoldingWithPnl!]!
+  myWatchlist: [Watchlist!]!
+  mySavedSearches: [SavedSearch!]!
+  adminUsers: [Farmer!]!
+  adminDeals: [Deal!]!
+  adminOffers: [Offer!]!
+  adminMetrics: AdminMetrics!
+  auditLog(entity: String, from: DateTime, to: DateTime): [AuditLog!]!
+  search(query: String!, limit: Int): SearchResults!
+}
+
+input RegisterInput {
+  firstName: String!
+  lastName: String!
+  email: String!
+  country: String!
+  password: String!
+}
+
+input RegisterIotDeviceInput {
+  label: String!
+  device_type: DeviceType!
+  lat: Float
+  lon: Float
+}
+
+enum RiskLevel {
+  LOW
+  MODERATE
+  HIGH
+}
+
+type SavedSearch {
+  id: ID!
+  userId: String!
+  name: String!
+  filters: JSON!
+  createdAt: DateTime!
+}
+
+type SearchResults {
+  listings: [Listing!]!
+  coins: [Coin!]!
+  plans: [InvestmentPlan!]!
+  crops: [Crop!]!
+}
+
+type SensorHistoryPoint {
+  id: ID!
+  date: String!
+  moisture: Float!
+  temperature: Float!
+  nitrogen: Float!
+  phosphorus: Float!
+  potassium: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type SensorReading {
+  moisture: Float
+  temperature: Float
+  nitrogen: Float
+  phosphorus: Float
+  potassium: Float
+  recorded_at: String
+}
+
+type SensorSection {
+  readings: [SensorReading!]!
+  summary: String!
+}
+
+enum SetupStatus {
+  PENDING
+  IN_PROGRESS
+  COMPLETE
+}
+
+enum SizeUnit {
+  HECTARES
+}
+
+enum SoilType {
+  CLAY
+  SANDY
+  LOAM
+  SILT
+  PEAT
+  CHALK
+}
+
+input SubmitObservationInput {
+  cropId: String!
+  region: String!
+  observedAt: String!
+  observedPrice: Int!
+  priceType: FieldPriceType!
+  quantityAvailable: Float
+  qualityGrade: QualityGrade
+  sourceNote: String!
+  agentDeviceId: String
+  attachmentUrls: [String!]
+  conditionTags: [String!]
+  confidence: ObservationConfidence!
+}
+
+type SubscriptionPlan {
+  id: ID!
+  name: String!
+  displayName: String!
+  priceAmount: Int!
+  currency: String!
+  predictionWeeklyLimit: Int!
+  farmDataLookbackSeconds: Int!
+  farmDataCacheTtlSeconds: Int!
+  healthReportIntervalSeconds: Int!
+  maxFarms: Int!
+  durationDays: Int!
+  features: [String!]!
+  isActive: Boolean!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+input TriggerIotDeviceInput {
+  command_type: IotCommandType!
+
+  """Optional command parameters as JSON"""
+  parameters: JSON
+}
+
+input UpdateFarmCoordinatesInput {
+  coordinates: [CoordinatePointInput!]!
+}
+
+input UpdateFarmerSettingsInput {
+  farmDataLookbackSeconds: Int
+  farmDataCacheTtlSeconds: Int
+  healthReportIntervalSeconds: Int
+  predictionWeeklyLimit: Int
+  notifyInApp: Boolean
+  notifyEmail: Boolean
+  notifySms: Boolean
+  smsPhoneNumber: String
+}
+
+input UpdateFarmPhotoInput {
+  url: String!
+  lat: Float
+  lon: Float
+}
+
+input UpdateFarmSoilDataInput {
+  soil_type: SoilType
+  crop_density: Float
+  growth_stage: GrowthStage
+  elevation_m: Float
+  days_to_maturity: Int
+  iot_device_ids: [String!]
+}
+
+input UploadFarmImagesInput {
+  images: [FarmImageItemInput!]!
+  predictionRangeId: String
+}
+
+type Wallet {
+  id: ID!
+  ownerType: WalletOwnerType!
+  ownerId: String!
+  currency: String!
+  availableBalance: Float!
+  lockedBalance: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+enum WalletOwnerType {
+  USER
+  ORG
+}
+
+type Watchlist {
+  id: ID!
+  userId: String!
+  entityType: WatchlistEntityType!
+  entityId: String!
+  priceThreshold: Int
+  createdAt: DateTime!
+}
+
+enum WatchlistEntityType {
+  CROP
+  COIN
+  LISTING
+  PLAN
+}
+
+type WeatherForecast {
+  date: String!
+  temperature: Float!
+  humidity: Float!
+  rainfall: Float!
+  windSpeed: Float!
+  description: String!
+  icon: String!
+}
+
+type YieldComparison {
+  id: ID!
+  field_name: String!
+  current_yield: Float!
+  last_season_yield: Float!
+  confidence_min: Float!
+  confidence_max: Float!
+  revenue: Float!
+  createdAt: DateTime!
+  updatedAt: DateTime!
+}
+
+type YieldSection {
+  tons_per_ha: Float!
+  change_percent: Float!
+  trend: String!
+  season: String!
+}
+

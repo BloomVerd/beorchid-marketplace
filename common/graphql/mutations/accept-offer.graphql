@@ -1,0 +1,10 @@
+mutation AcceptOffer($offerId: ID!) {
+  acceptOffer(offerId: $offerId) {
+    id
+    status
+    amount
+    sellerId
+    buyerId
+    escrowLedgerRef
+  }
+}

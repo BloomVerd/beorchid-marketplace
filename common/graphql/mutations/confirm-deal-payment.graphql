@@ -1,0 +1,6 @@
+mutation ConfirmDealPayment($dealId: ID!) {
+  confirmDealPayment(dealId: $dealId) {
+    id
+    status
+  }
+}

@@ -1,0 +1,7 @@
+mutation CreateSavedSearch($name: String!, $filters: JSON!) {
+  createSavedSearch(name: $name, filters: $filters) {
+    id
+    name
+    filters
+  }
+}

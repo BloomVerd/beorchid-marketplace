@@ -1,0 +1,49 @@
+query InvestmentPlans($status: PlanStatus, $cropId: String, $maxMaturityDays: Float, $lowRiskOnly: Boolean) {
+  investmentPlans(status: $status, cropId: $cropId, maxMaturityDays: $maxMaturityDays, lowRiskOnly: $lowRiskOnly) {
+    id
+    title
+    cropId
+    acreage
+    unitCost
+    expectedProfitMin
+    expectedProfitMax
+    maturityDays
+    totalUnits
+    unitsRemaining
+    riskNotes
+    status
+    createdAt
+  }
+}
+
+query InvestmentPlanDetail($id: ID!) {
+  investmentPlan(id: $id) {
+    id
+    title
+    cropId
+    acreage
+    unitCost
+    expectedProfitMin
+    expectedProfitMax
+    maturityDays
+    totalUnits
+    unitsRemaining
+    riskNotes
+    status
+    createdAt
+  }
+}
+
+query MyInvestments {
+  myInvestments {
+    id
+    planId
+    units
+    principal
+    status
+    purchasedAt
+    maturesAt
+    payoutAmount
+    settlementLedgerRef
+  }
+}

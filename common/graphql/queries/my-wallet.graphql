@@ -1,0 +1,9 @@
+query MyWallet {
+  myWallet {
+    id
+    availableBalance
+    lockedBalance
+    currency
+    ownerType
+  }
+}

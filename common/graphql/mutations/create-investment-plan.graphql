@@ -1,0 +1,17 @@
+mutation CreateInvestmentPlan($input: CreatePlanInput!) {
+  createInvestmentPlan(input: $input) {
+    id
+    title
+    cropId
+    acreage
+    unitCost
+    expectedProfitMin
+    expectedProfitMax
+    maturityDays
+    totalUnits
+    unitsRemaining
+    riskNotes
+    status
+    createdAt
+  }
+}

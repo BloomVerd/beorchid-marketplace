@@ -1,0 +1,8 @@
+mutation RecomputeCoinPrice($coinId: ID!) {
+  recomputeCoinPrice(coinId: $coinId) {
+    id
+    coinId
+    price
+    computedAt
+  }
+}

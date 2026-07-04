@@ -1,0 +1,6 @@
+mutation RejectOffer($offerId: ID!) {
+  rejectOffer(offerId: $offerId) {
+    id
+    status
+  }
+}

@@ -1,0 +1,11 @@
+mutation SubmitFieldObservation($input: SubmitObservationInput!) {
+  submitFieldObservation(input: $input) {
+    id
+    status
+    confidence
+    cropId
+    region
+    observedAt
+    observedPrice
+  }
+}

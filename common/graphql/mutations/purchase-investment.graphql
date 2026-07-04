@@ -1,0 +1,9 @@
+mutation PurchaseInvestment($planId: ID!, $units: Float!) {
+  purchaseInvestment(planId: $planId, units: $units) {
+    id
+    units
+    principal
+    status
+    maturesAt
+  }
+}

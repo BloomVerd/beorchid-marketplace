@@ -1,0 +1,83 @@
+query Listings($crop: String, $region: String, $status: ListingStatus, $maxPrice: Float, $minHealthScore: Float) {
+  listings(crop: $crop, region: $region, status: $status, maxPrice: $maxPrice, minHealthScore: $minHealthScore) {
+    id
+    crop
+    region
+    acreage
+    askingPrice
+    currency
+    status
+    sellerId
+    farmId
+    expiresAt
+    createdAt
+    description
+    lat
+    lon
+    farmImages {
+      id
+      url
+    }
+    farmHealth {
+      overall_score
+    }
+  }
+}
+
+query ListingDetail($id: ID!) {
+  listing(id: $id) {
+    id
+    crop
+    region
+    acreage
+    askingPrice
+    currency
+    status
+    sellerId
+    farmId
+    description
+    expiresAt
+    createdAt
+    updatedAt
+    lat
+    lon
+    farmImages {
+      id
+      url
+    }
+    farmHealth {
+      overall_score
+      soil_health
+      crop_health
+      weather_stress
+      disease_risk
+    }
+  }
+}
+
+query ListingOffers($listingId: ID!) {
+  listingOffers(listingId: $listingId) {
+    id
+    listingId
+    amount
+    status
+    message
+    expiresAt
+    createdAt
+    buyerId
+    createdById
+    parentOfferId
+  }
+}
+
+query MyOffers {
+  myOffers {
+    id
+    listingId
+    amount
+    status
+    message
+    expiresAt
+    createdAt
+  }
+}
